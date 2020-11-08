@@ -1,62 +1,49 @@
-/***************************************************************************************************************************************************
-* This program is an implementation of a number guessing game that uses a for loop with nested if statments to prove the user feed back on their guess.*
-****************************************************************************************************************************************************/
-
 #include <iostream>
-#include <string>
-#include <stdlib.h> //initialize seed for random number
-#include <time.h>
+#include <fstream>
 
 using namespace std;
 
-int Success_Message(int ranNum);
+int ReadFile(ifstream& inFile);
 
 int main()
 {
-	int ranNum;
-	int guess;
-	srand(time(NULL)); //initialize random seed
-	ranNum = rand() % 10 + 1; //range 1 to 10
+	ifstream inFile;
 
-	cout << "The computer was generated a random number between 1 and 10.\n";
-	cout << "You have three chances to guess the random number.\n";
-
-	for (int i = 0; i < 3;)
-	{
-		cout << "Enter your guess: ";
-		cin >> guess;
-
-		if (guess == ranNum)
-		{
-			Success_Message(ranNum);
-			break;
-		}
-		else if (guess < ranNum)
-		{
-			cout << "Your guess was too low.\n";
-			i++;
-		}
-		else if (guess > ranNum)
-		{
-			cout << "Your guess was too high.\n";
-			i++;
-		}
-		if (i == 3)
-		{
-			cout << "You ran out of guesses.\n";
-			cout << "The random number was: " << ranNum << "." << endl;
-		}
-	}
-
-	
-
+	ReadFile(inFile);
 
 	return 0;
 }
 
-int Success_Message(int ranNum)
-{
-	cout << "You win!\n";
-	cout << "The random number was " << ranNum << endl;
-	return 1;
+int ReadFile(ifstream& inFile) {
+
+	char input;
+	int powerOfTwo = 0;
+	int sum = 0;
+
+	inFile.open("test.txt");
+
+	if (!inFile) {
+		cout << "Input file failed to open.";
+		return 1;
+	}
+
+	inFile.get(input);
+
+	int bitPosition = 0;
+	while (inFile) {
+		
+		if (bitPosition == 0)
+			powerOfTwo += 1;
+		else
+			powerOfTwo = (powerOfTwo * 2);
+
+		sum += powerOfTwo;
+
+		cout << sum << endl;
+
+		
+		bitPosition++;
+		inFile.get(input);
+	}
+
 }
